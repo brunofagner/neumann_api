@@ -4,6 +4,7 @@ const { SECRET } = process.env;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Person = require("../models/Person");
+const nodemailer = require("nodemailer");
 
 async function registerController(req, res) {
   const { nome, email, senha } = req.body;
@@ -44,28 +45,33 @@ async function registerController(req, res) {
       },
       SECRET
     );
-    res.status(201).json({ message: "Usuário criado com sucesso!", token });
+    res.status(201).json({
+      message: "Usuário criado com sucesso!",
+      token,
+      user: { id: user._id, nome: user.nome },
+    });
     //Enviar email de confirmação
     const transport = nodemailer.createTransport({
       //chaves padrão para mandar  email usando gmail
-      host: 'smtp.gmail.com',
+      host: "smtp.gmail.com",
       port: 465,
       secure: true,
       auth: {
         user: process.env.EMAIL,
-        pass: process.env.SENHA
-      }
+        pass: process.env.SENHA,
+      },
     });
 
-    transport.sendMail({
-      from: `Suporte neumann <${process.env.EMAIL}>`,
-      to: email,
-      subject: 'Teste',
-      html: '<h1>Confirmação de registro!</h1>',
-      text: 'Sua conta foi criada com sucesso!!'
-    })
-      .then(() => console.log('Email enviado com sucesso!!'))
-      .catch((err) => console.log('Falha no envio! ', err));
+    transport
+      .sendMail({
+        from: `Suporte neumann <${process.env.EMAIL}>`,
+        to: email,
+        subject: "Teste",
+        html: "<h1>Confirmação de registro!</h1>",
+        text: "Sua conta foi criada com sucesso!!",
+      })
+      .then(() => console.log("Email enviado com sucesso!!"))
+      .catch((err) => console.log("Falha no envio! ", err));
   } catch (error) {
     res.status(500).json(error);
   }
@@ -104,7 +110,11 @@ async function loginController(req, res) {
       },
       SECRET
     );
-    res.status(200).json({ msg: "Autenticação realizada com sucesso!", token });
+
+    res.status(200).json({
+      msg: "Autenticação realizada com sucesso!",
+      user: { id: user._id, nome: user.nome, token },
+    });
   } catch (error) {
     console.log(error);
 
