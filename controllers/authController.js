@@ -48,7 +48,7 @@ async function registerController(req, res) {
     res.status(201).json({
       message: "Usuário criado com sucesso!",
       token,
-      user: { id: user._id, nome: user.nome },
+      user: { id: user._id, nome: user.nome, email: user.email },
     });
     //Enviar email de confirmação
     const transport = nodemailer.createTransport({
@@ -66,7 +66,7 @@ async function registerController(req, res) {
       .sendMail({
         from: `Suporte neumann <${process.env.EMAIL}>`,
         to: email,
-        subject: "Teste",
+        subject: "Confirmação de Registro",
         html: "<h1>Confirmação de registro!</h1>",
         text: "Sua conta foi criada com sucesso!!",
       })
@@ -113,7 +113,7 @@ async function loginController(req, res) {
 
     res.status(200).json({
       msg: "Autenticação realizada com sucesso!",
-      user: { id: user._id, nome: user.nome, token },
+      user: { id: user._id, nome: user.nome, email: user.email, token },
     });
   } catch (error) {
     console.log(error);
