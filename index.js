@@ -9,6 +9,7 @@ const morgan = require("morgan");
 const personRoutes = require("./routes/personRoutes");
 const pubRoutes = require("./routes/pubRoutes");
 const authRoutes = require("./routes/authRoutes");
+const projectRoutes = require("./routes/projectRoutes")
 // CHECA O TOKEN.
 const checkToken = require("./validators/checkToken");
 // MONGODB
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/person", checkToken, personRoutes);
 app.use("/pub", checkToken, pubRoutes);
+app.use("/project", checkToken, projectRoutes)
 // CONEXÃO COM O BANCO DE DADOS E INICIALIZAÇÃO DO SERVIDOR.
 mongoose
   .connect(ME_CONFIG_MONGODB_URL)
