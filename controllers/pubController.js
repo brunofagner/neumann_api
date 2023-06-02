@@ -2,10 +2,8 @@ const Pub = require("../models/Pub");
 
 async function createPub(req, res) {
   //req.body onde vai chegar os dados
-  const { titulo, conteudo, autor } = req.body;
-
+  const { conteudo, autor } = req.body;
   const pub = {
-    titulo,
     conteudo,
     autor,
   };
@@ -15,14 +13,9 @@ async function createPub(req, res) {
     return;
   }
 
-  if (!titulo) {
-    res.status(422).json({ error: "Titulo obrigatorio!" });
-    return;
-  }
   // create
   try {
     await Pub.create(pub);
-
     res
       .status(201)
       .json({ message: "Publicação inserida no sistema com sucesso!" });
@@ -62,10 +55,9 @@ async function getPub(req, res) {
 async function updatePub(req, res) {
   const id = req.params.id;
 
-  const { titulo, conteudo, autor } = req.body;
+  const { conteudo, autor } = req.body;
 
   const pub = {
-    titulo,
     conteudo,
     autor,
   };
@@ -93,7 +85,6 @@ async function deletePub(req, res) {
 
   try {
     await Pub.deleteOne({ _id: id });
-
     res.status(200).json("Publicação removida com sucesso!");
   } catch (error) {
     res.status(500).json({ error: error });

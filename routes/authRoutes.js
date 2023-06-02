@@ -5,6 +5,8 @@ const {
 } = require("../controllers/authController");
 
 // CADASTRO E LOGIN DE USUÁRIO.
-router.post("/register", registerController).post("/login", loginController);
+router
+  .post("/register", upload.single("image"), registerController)
+  .post("/login", loginController);
 
 module.exports = router;

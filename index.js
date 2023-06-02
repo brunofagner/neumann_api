@@ -3,21 +3,20 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-var morgan = require("morgan");
+const morgan = require("morgan");
 
 // IMPORTAÇÃO DAS ROTAS.
 const personRoutes = require("./routes/personRoutes");
 const pubRoutes = require("./routes/pubRoutes");
 const authRoutes = require("./routes/authRoutes");
-
 // CHECA O TOKEN.
 const checkToken = require("./validators/checkToken");
-
+// MONGODB
 const { ME_CONFIG_MONGODB_URL, NEUMANN_API_PORT } = process.env;
 
 // MIDDLEWARES
-// Forma de ler JSON
 app.use(morgan("tiny"));
+// Forma de ler JSON
 app.use(
   express.urlencoded({
     extended: true,

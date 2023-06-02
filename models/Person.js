@@ -5,6 +5,10 @@ const Person = mongoose.model("Person", {
   email: String,
   senha: String,
   professor: Boolean,
+  image: {
+    data: Buffer,
+    contentType: String,
+  },
 });
 
 module.exports = Person;

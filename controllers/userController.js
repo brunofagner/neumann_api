@@ -63,7 +63,6 @@ async function getPerson(req, res) {
 
 async function personUpdate(req, res) {
   const id = req.params.id;
-
   const { nome, email, senha, professor } = req.body;
 
   const person = {
@@ -79,8 +78,9 @@ async function personUpdate(req, res) {
       res.status(422).json({ error: "Usuario não foi encontrado" });
       return;
     }
-    res.status(200).json(person);
+    res.status(200).json({ id, person });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error });
   }
 }
