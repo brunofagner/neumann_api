@@ -6,7 +6,7 @@ const {
 
 // CADASTRO E LOGIN DE USUÁRIO.
 router
-  .post("/register", upload.single("image"), registerController)
+  .post("/register", registerController)
   .post("/login", loginController);
 
 module.exports = router;
