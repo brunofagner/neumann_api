@@ -17,10 +17,12 @@ async function createPerson(req, res) {
       res.status(422).json({ error: "Usuario não foi encontrado" });
       return;
     }
+
     if (!nome) {
       res.status(422).json({ error: "Nome obrigatorio!" });
       return;
     }
+
     // create
     try {
       await Person.create(person);
@@ -64,11 +66,18 @@ async function getPerson(req, res) {
 async function personUpdate(req, res) {
   const id = req.params.id;
   const { nome, email, senha, professor } = req.body;
+  //create password
+  const salt = await bcrypt.genSalt(12);
+  let senhaHash;
+  console.log(senha);
+  if (senha) {
+    senhaHash = await bcrypt.hash(senha, salt);
+  }
 
   const person = {
     nome,
     email,
-    senha,
+    senha: senhaHash,
     professor,
   };
 
@@ -78,7 +87,10 @@ async function personUpdate(req, res) {
       res.status(422).json({ error: "Usuario não foi encontrado" });
       return;
     }
-    res.status(200).json({ id, person });
+
+    const newPerson = await Person.findOne({ _id: id });
+
+    res.status(200).json({ id, person: newPerson });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: error });

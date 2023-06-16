@@ -7,7 +7,7 @@ const Person = require("../models/Person");
 const nodemailer = require("nodemailer");
 
 async function registerController(req, res) {
-  const { nome, email, senha } = req.body;
+  const { nome, email, senha, professor } = req.body;
   //validações
   if (!nome) {
     return res.status(422).json({ message: "Nome de usuario é obrigatorio!!" });
@@ -35,6 +35,7 @@ async function registerController(req, res) {
     nome,
     email,
     senha: senhaHash,
+    professor,
   });
 
   try {
@@ -48,7 +49,12 @@ async function registerController(req, res) {
     res.status(201).json({
       message: "Usuário criado com sucesso!",
       token,
-      user: { id: user._id, nome: user.nome, email: user.email },
+      user: {
+        id: user._id,
+        nome: user.nome,
+        email: user.email,
+        professor: user.professor,
+      },
     });
     //Enviar email de confirmação
     const transport = nodemailer.createTransport({
@@ -88,7 +94,6 @@ async function loginController(req, res) {
   if (!senha) {
     return res.status(422).json({ message: "Senha é obrigatoria!!" });
   }
-
   //checar se o usuario existe
   const user = await Person.findOne({ email: email });
 
@@ -113,11 +118,16 @@ async function loginController(req, res) {
 
     res.status(200).json({
       msg: "Autenticação realizada com sucesso!",
-      user: { id: user._id, nome: user.nome, email: user.email, token },
+      user: {
+        id: user._id,
+        nome: user.nome,
+        email: user.email,
+        professor: user.professor,
+        token,
+      },
     });
   } catch (error) {
     console.log(error);
-
     res.status(500).json({
       message: "Aconteceu um erro inesperado.",
     });

@@ -1,13 +1,13 @@
 const Pub = require("../models/Pub");
-
+var moment = require("moment-timezone");
 async function createPub(req, res) {
   //req.body onde vai chegar os dados
   const { conteudo, autor } = req.body;
   const pub = {
     conteudo,
     autor,
+    date: moment.tz("America/Sao_Paulo").format("LLLL"),
   };
-
   if (!pub) {
     res.status(422).json({ error: "Publicação não foi encontrado" });
     return;
@@ -26,7 +26,7 @@ async function createPub(req, res) {
 
 async function getAllPubs(req, res) {
   try {
-    const pubs = await Pub.find();
+    const pubs = await Pub.find().sort({ date: -1 });
 
     res.status(200).json(pubs);
   } catch (error) {
@@ -60,15 +60,12 @@ async function updatePub(req, res) {
   const pub = {
     conteudo,
     autor,
+    date: moment.tz("America/Sao_Paulo").format("LLLL"),
   };
 
   try {
-    const updatedPub = await Pub.updateOne({ _id: id }, pub);
-    if (updatedPub.matchedCount === 0) {
-      res.status(422).json({ error: "Publicação não foi encontrada!" });
-      return;
-    }
-    res.status(200).json(pub);
+    const updatedPub = await Pub.findOneAndUpdate({ _id: id }, pub);
+    res.status(200).json({ msg: "Atualizado com sucesso!", pub: updatedPub });
   } catch (error) {
     res.status(500).json({ error: error });
   }
@@ -85,7 +82,7 @@ async function deletePub(req, res) {
 
   try {
     await Pub.deleteOne({ _id: id });
-    res.status(200).json("Publicação removida com sucesso!");
+    res.status(200).json({ msg: "Publicação removida com sucesso!" });
   } catch (error) {
     res.status(500).json({ error: error });
   }
