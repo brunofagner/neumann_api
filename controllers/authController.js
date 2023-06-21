@@ -56,28 +56,28 @@ async function registerController(req, res) {
         professor: user.professor,
       },
     });
-    //Enviar email de confirmação
-    const transport = nodemailer.createTransport({
-      //chaves padrão para mandar  email usando gmail
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.SENHA,
-      },
-    });
+    // //Enviar email de confirmação
+    // const transport = nodemailer.createTransport({
+    //   //chaves padrão para mandar  email usando gmail
+    //   host: "smtp.gmail.com",
+    //   port: 465,
+    //   secure: true,
+    //   auth: {
+    //     user: process.env.EMAIL,
+    //     pass: process.env.SENHA,
+    //   },
+    // });
 
-    transport
-      .sendMail({
-        from: `Suporte neumann <${process.env.EMAIL}>`,
-        to: email,
-        subject: "Confirmação de Registro",
-        html: "<h1>Confirmação de registro!</h1>",
-        text: "Sua conta foi criada com sucesso!!",
-      })
-      .then(() => console.log("Email enviado com sucesso!!"))
-      .catch((err) => console.log("Falha no envio! ", err));
+    // transport
+    //   .sendMail({
+    //     from: `Suporte neumann <${process.env.EMAIL}>`,
+    //     to: email,
+    //     subject: "Confirmação de Registro",
+    //     html: "<h1>Confirmação de registro!</h1>",
+    //     text: "Sua conta foi criada com sucesso!!",
+    //   })
+    //   .then(() => console.log("Email enviado com sucesso!!"))
+    //   .catch((err) => console.log("Falha no envio! ", err));
   } catch (error) {
     res.status(500).json(error);
   }

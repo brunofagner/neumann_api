@@ -10,8 +10,8 @@ const personRoutes = require("./routes/personRoutes");
 const pubRoutes = require("./routes/pubRoutes");
 const authRoutes = require("./routes/authRoutes");
 const projectRoutes = require("./routes/projectRoutes");
-// CHECA O TOKEN.
 
+// CHECA O TOKEN.
 const checkToken = require("./validators/checkToken");
 
 // MONGODB
