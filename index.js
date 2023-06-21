@@ -26,12 +26,13 @@ app.use(
     extended: true,
   })
 );
+
 app.use(express.json());
-app.use("/", (req, res) => res.send("OI"));
 app.use("/auth", authRoutes);
 app.use("/person", checkToken, personRoutes);
 app.use("/pub", checkToken, pubRoutes);
 app.use("/project", checkToken, projectRoutes);
+
 // CONEXÃO COM O BANCO DE DADOS E INICIALIZAÇÃO DO SERVIDOR.
 mongoose
   .connect(ME_CONFIG_MONGODB_URL)
