@@ -27,6 +27,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use("/", (req, res) => res.send("OI"));
 app.use("/auth", authRoutes);
 app.use("/person", checkToken, personRoutes);
 app.use("/pub", checkToken, pubRoutes);
