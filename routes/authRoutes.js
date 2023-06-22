@@ -7,6 +7,7 @@ const {
 // CADASTRO E LOGIN DE USUÁRIO.
 router
   .get("/", (req, res) => {
+    console.log("oi");
     res.json({ msg: "deu certo mano" });
   })
   .post("/register", registerController)
