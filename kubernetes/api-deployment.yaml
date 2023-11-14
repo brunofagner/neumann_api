@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neumann-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: neumann-api
+  template:
+    metadata:
+      labels:
+        app: neumann-api
+    spec:
+      containers:
+      - name: neumann-api
+        image: brunofagner/neumann_api:v1
+        ports:
+        - containerPort: 80
+        env:
+        - name: MONGO_DB_CONNECTION_STRING
+          value: "mongodb://root:12345678@mongodb:27017/mongo"
